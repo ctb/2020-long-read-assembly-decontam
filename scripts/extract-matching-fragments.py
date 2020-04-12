@@ -53,7 +53,7 @@ def main():
     m = 0
     for n, x in enumerate(GenomeShredder(args.assembly, args.fragment_size)):
         name, seq, start, end = x
-        print(f'...{n} {name.split()[0]} {start} - found {m} so far')
+        print(f'...on fragment {n} {name.split()[0]} start {start} - found {m} so far')
 
         mh = mh_factory.copy_and_clear()
         mh.add_sequence(seq)
