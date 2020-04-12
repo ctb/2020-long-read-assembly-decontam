@@ -1,0 +1,5 @@
+assembly: test-data/contigs.fa.gz
+database: test-data/database/against.sbt.json
+outputdir: output.test/
+ksize: 31
+scaled: 2000
