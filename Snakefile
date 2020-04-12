@@ -10,15 +10,6 @@ scaled = config['scaled']
 ksize = config['ksize']
 fragment_size = config['fragment_size']
 
-genomes_location = config['database_matching_genomes']
-
-all_matching_files = []
-for root, dirs, files in os.walk(genomes_location, topdown=False):
-    for name in files:
-        filename = os.path.join(root, name)
-        if filename.startswith('./'): filename = filename[2:]
-        all_matching_files.append(filename)
-
 rule all:
     input:
         outputdir + 'matching-fragments.fa'
