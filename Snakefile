@@ -18,6 +18,9 @@ for root, dirs, files in os.walk(genomes_location, topdown=False):
         if filename.startswith('./'): filename = filename[2:]
         all_matching_files.append(filename)
 
+rule all:
+    input:
+        outputdir + 'matching-fragments.fa'
 
 rule gather_all:
     input:
@@ -37,9 +40,12 @@ rule gather_all:
 rule extract_fragments:
     input:
         matches = outputdir + 'matches.sig',
-        genomes = all_matching_files
+        assembly = config['assembly']
+    output:
+        outputdir + 'matching-fragments.fa'
     shell: """
-        ./scripts/extract-matching-fragments.py {input.matches} {input.genomes}
+        ./scripts/extract-matching-fragments.py {input.matches} \
+              {input.assembly} {output}
     """
 
 rule contigs_sig:
