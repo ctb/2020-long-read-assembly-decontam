@@ -55,7 +55,7 @@ def main():
 
         mh = mh_factory.copy_and_clear()
         mh.add_sequence(seq)
-        if mh:
+        if mh.count_common(combined_matches_mh):
             m += 1
             outfp.write(f'>frag{n}.match{m} {name} {start} {end}\n{seq}\n')
 
