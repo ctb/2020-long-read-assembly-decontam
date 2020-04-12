@@ -26,7 +26,8 @@ def main():
     p = argparse.ArgumentParser()
     p.add_argument('gather_matches')
     p.add_argument('assembly')
-    p.add_argument('output')
+    p.add_argument('output', help='output fragments go here')
+    p.add_argument('--output-contigs', help='output contigs with ANY matches')
     p.add_argument('-F', '--fragment-size', type=int, default=10000)
     args = p.parse_args()
 
@@ -47,6 +48,7 @@ def main():
     print(f'outputting to: {args.output}')
     outfp = open(args.output, 'wt')
 
+    matching_contigs = set()
     print(f'loading {args.assembly}...')
     m = 0
     for n, x in enumerate(GenomeShredder(args.assembly, args.fragment_size)):
@@ -57,6 +59,7 @@ def main():
         mh.add_sequence(seq)
         if mh.count_common(combined_matches_mh):
             m += 1
+            matching_contigs.add(name)
             outfp.write(f'>frag{n}.match{m} {name} {start} {end}\n{seq}\n')
 
     n += 1
@@ -65,6 +68,19 @@ def main():
 
     print(f'found matches in {m} of {n} fragments')
     print(f'output in {args.output}')
+    print(f'{len(matching_contigs)} assembly contigs have matches.')
+
+    if args.output_contigs:
+        found = 0
+        print(f'outputting matching contigs to {args.output_contigs}')
+        with open(args.output_contigs, 'wt') as fp:
+            for record in screed.open(args.assembly):
+                if record.name in matching_contigs:
+                    found += 1
+                    fp.write(f'>{record.name}\n{record.sequence}\n')
+
+        print(f'found and output {found} matching contigs, expected {len(matching_contigs)}')
+        assert found == len(matching_contigs)
     
     return 0
 

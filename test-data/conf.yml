@@ -4,3 +4,4 @@ database_matching_genomes: test-data/genomes/
 outputdir: output.test/
 ksize: 31
 scaled: 2000
+fragment_size: 10000

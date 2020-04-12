@@ -8,6 +8,7 @@ configfile: 'test-data/conf.yml'
 outputdir = config['outputdir'].rstrip('/') + '/'
 scaled = config['scaled']
 ksize = config['ksize']
+fragment_size = config['fragment_size']
 
 genomes_location = config['database_matching_genomes']
 
@@ -42,10 +43,15 @@ rule extract_fragments:
         matches = outputdir + 'matches.sig',
         assembly = config['assembly']
     output:
-        outputdir + 'matching-fragments.fa'
+        fragments = outputdir + 'matching-fragments.fa',
+        contigs = outputdir + 'matching-contigs.fa'
+    params:
+        fragment_size=int(fragment_size)
     shell: """
         ./scripts/extract-matching-fragments.py {input.matches} \
-              {input.assembly} {output}
+              {input.assembly} {output.fragments} \
+              --output-contigs {output.contigs} \
+              -F {params.fragment_size}
     """
 
 rule contigs_sig:
