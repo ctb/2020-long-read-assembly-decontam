@@ -1,0 +1,5 @@
+assembly: /home/ems/necator/assemblies/wtdbg2/necator_wtdbg2_2020.04.09.01.ctg.fa
+database: /home/ems/sourmash/genbank-k31.sbt.json
+outputdir: output.necator/
+ksize: 31
+scaled: 2000
