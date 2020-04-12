@@ -25,7 +25,7 @@ The main output files are
 
 Once that works, you can configure it yourself by copying
 `test-data/conf-test.yml` to a new file and editing it. See
-`conf/conf-necator.yml`.
+`conf/conf-necator.yml` for a real example.
 
 ## Explanation of output files.
 
@@ -35,6 +35,13 @@ ones are,
 * `gather.csv` - the list of contaminants
 * `matching-contigs.fa` - all contigs with any matches to the database
 * `matching-fragments.fa` - all fragments with any matches to the database
+
+## Resources
+
+On a ~300 MB assembly, this took about 2 hours and required about 2
+GB of RAM, using the
+[RefSeq microbial genomes SBT](https://sourmash.readthedocs.io/en/latest/databases.html#refseq-microbial-genomes-sbt). The disk space requirement is more
+significant, mainly because the SBTs are in the ~10-30 GB range when unpacked.
    
 ## Need help?
 
