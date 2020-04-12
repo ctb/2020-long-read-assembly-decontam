@@ -3,3 +3,5 @@ database: /home/ems/sourmash/genbank-k31.sbt.json
 outputdir: output.necator/
 ksize: 31
 scaled: 2000
+fragment_size: 10000
+
