@@ -1,5 +1,6 @@
 assembly: test-data/contigs.fa.gz
 database: test-data/database/against.sbt.json
+database_matching_genomes: test-data/genomes/
 outputdir: output.test/
 ksize: 31
 scaled: 2000
