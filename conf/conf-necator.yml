@@ -1,7 +1,16 @@
+# assembly to be examined
 assembly: /home/ems/necator/assemblies/wtdbg2/necator_wtdbg2_2020.04.09.01.ctg.fa
+
+# sourmash database to screen against
 database: /home/ems/sourmash/genbank-k31.sbt.json
+
+# place to put output files
 outputdir: output.necator/
+
+# k-mer size and scaled values that match the sourmash database
 ksize: 31
 scaled: 2000
+
+# how much to shard the assembly when examining it
 fragment_size: 10000
 

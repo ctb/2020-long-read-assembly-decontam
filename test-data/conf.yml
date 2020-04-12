@@ -1,7 +1,15 @@
+# assembly to be examined
 assembly: test-data/contigs.fa.gz
+
+# sourmash database to screen against
 database: test-data/database/against.sbt.json
-database_matching_genomes: test-data/genomes/
+
+# place to put output files
 outputdir: output.test/
+
+# k-mer size and scaled values that match the sourmash database
 ksize: 31
 scaled: 2000
+
+# how much to shard the assembly when examining it
 fragment_size: 10000
