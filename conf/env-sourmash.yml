@@ -1,0 +1,9 @@
+channels:
+    - conda-forge
+    - bioconda
+    - defaults
+dependencies:
+    - sourmash>3.2,<4
+#    - pip
+#    - pip:
+#      - dendropy==4.4.0

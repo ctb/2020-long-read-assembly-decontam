@@ -14,9 +14,14 @@ rule gather_all:
         query = outputdir + 'contigs.sig',
         database = config['database']
     output:
-        csv = outputdir + 'gather.csv'
+        csv = outputdir + 'gather.csv',
+        matches = outputdir + 'matches.sig'
+    conda: 'conf/env-sourmash.yml'
+    params:
+        scaled = scaled
     shell: """
-        sourmash gather {input.query} {input.database} -o {output.csv}
+        sourmash gather {input.query} {input.database} -o {output.csv} \
+            --save-matches {output.matches} --scaled={params.scaled}
     """
 
 rule contigs_sig:
@@ -24,6 +29,11 @@ rule contigs_sig:
         config['assembly']
     output:
         outputdir + 'contigs.sig'
+    conda: 'conf/env-sourmash.yml'
+    params:
+        scaled = scaled,
+        ksize = ksize
     shell: """
-        sourmash compute -k 31 --scaled {scaled} -k {ksize} {input} -o {output}
+        sourmash compute -k {params.ksize} --scaled {params.scaled} \
+            {input} -o {output}
     """
