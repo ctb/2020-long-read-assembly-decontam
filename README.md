@@ -53,6 +53,10 @@ Thanks to Erich Schwarz (for stubborn pursuit of contamination in
 long-read assemblies) and Taylor Reiter (for stubborn pursuit of
 contamination, period) for their inspiration!
 
+A first try at this approach is detailed
+[here](http://ivory.idyll.org/blog/2018-detecting-contamination-in-long-read-assemblies.html), and the discussion that led to this particular repo is in
+[sourmash issue #940](https://github.com/dib-lab/sourmash/issues/940).
+
 ----
 
 [@ctb](https://github.com/ctb/)
