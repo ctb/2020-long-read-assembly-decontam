@@ -9,17 +9,22 @@ class GenomeShredder(object):
     def __init__(self, genome_file, fragment_size):
         self.genome_file = genome_file
         self.fragment_size = fragment_size
+        self.num_records = None
 
     def __iter__(self):
         fragment_size = self.fragment_size
 
+        n = 0
         for record in screed.open(self.genome_file):
+            n += 1
             if not fragment_size:
                 yield record.name, record.sequence, 0, len(record.sequence)
             else:
                 for start in range(0, len(record.sequence), fragment_size):
                     seq = record.sequence[start:start + fragment_size]
                     yield record.name, seq, start, start + len(seq)
+
+        self.num_records = n
 
 
 def main():
@@ -54,9 +59,11 @@ def main():
     matching_contigs = set()
     print(f'loading {args.assembly_fasta}...')
     m = 0
-    for n, x in enumerate(GenomeShredder(args.assembly_fasta, args.fragment_size)):
+
+    shredder = GenomeShredder(args.assembly_fasta, args.fragment_size)
+    for n, x in enumerate(shredder):
         name, seq, start, end = x
-        print(f'...on fragment {n} {name.split()[0]} start {start} - found {m} so far')
+        print(f'...on fragment {n} {name.split()[0]} start {start} - found {m} so far         ', end='\r')
 
         mh = mh_factory.copy_and_clear()
         mh.add_sequence(seq)
@@ -65,11 +72,13 @@ def main():
             matching_contigs.add(name)
             outfp.write(f'>frag{n}.match{m} {name} {start} {end}\n{seq}\n')
 
+    print('')
+
     n += 1
 
     outfp.close()
 
-    print(f'found matches in {m} of {n} fragments')
+    print(f'found matches in {m} of {n} fragments, from {shredder.num_records}')
     print(f'output fragments in {args.output_fragments}')
     print(f'{len(matching_contigs)} assembly contigs have matches.')
 
@@ -87,6 +96,8 @@ def main():
     
     if args.nomatch_contigs:
         found = 0
+        n_contigs = shredder.num_records
+
         print(f'outputting non-matching contigs to {args.nomatch_contigs}')
         with open(args.nomatch_contigs, 'wt') as fp:
             for record in screed.open(args.assembly_fasta):
@@ -95,7 +106,7 @@ def main():
                     fp.write(f'>{record.name}\n{record.sequence}\n')
 
         print(f'found and output {found} non-matching contigs')
-        #assert found == len(matching_contigs)
+        assert found == n_contigs - len(matching_contigs)
 
     return 0
 
