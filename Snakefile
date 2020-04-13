@@ -12,7 +12,9 @@ fragment_size = config['fragment_size']
 
 rule all:
     input:
-        outputdir + 'matching-fragments.fa'
+        outputdir + 'matching-fragments.fa',
+        outputdir + 'matching-contigs.fa',
+        outputdir + 'nomatch-contigs.fa'
 
 rule gather_all:
     input:
