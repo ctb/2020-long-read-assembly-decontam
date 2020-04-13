@@ -11,12 +11,23 @@ You'll need snakemake and conda installed.
 
 Then, clone this repository and change into the top-level repo directory.
 
+### Quickstart:
+
+Clone the repository, change into it, create the environment, and activate it:
+
+```
+git clone https://github.com/ctb/2020-long-read-assembly-decontam
+cd ./2020-long-read-assembly-decontam/
+conda env create -f environment.yml -n lra-decontam
+conda activate lra-decontam
+```
+
 ## Running!
 
 To run, execute (in the top-level directory):
 
 ```
-snakemake --use-conda -p
+snakemake --use-conda -p -j 1
 ```
 
 This should succeed :).

@@ -41,6 +41,7 @@ rule extract_fragments:
         nomatch = outputdir + 'nomatch-contigs.fa'
     params:
         fragment_size=int(fragment_size)
+    conda: 'conf/env-sourmash.yml'
     shell: """
         ./scripts/extract-matching-fragments.py \
               {input.matches} {input.assembly} \
