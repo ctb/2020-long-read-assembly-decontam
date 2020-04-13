@@ -59,7 +59,7 @@ def main():
         print(f'...on fragment {n} {name.split()[0]} start {start} - found {m} so far')
 
         mh = mh_factory.copy_and_clear()
-        mh.add_sequence(seq)
+        mh.add_sequence(seq, True)
         if mh.count_common(combined_matches_mh):
             m += 1
             matching_contigs.add(name)
