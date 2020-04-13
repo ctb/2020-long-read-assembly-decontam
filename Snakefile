@@ -35,13 +35,16 @@ rule extract_fragments:
         assembly = config['assembly']
     output:
         fragments = outputdir + 'matching-fragments.fa',
-        contigs = outputdir + 'matching-contigs.fa'
+        matching = outputdir + 'matching-contigs.fa',
+        nomatch = outputdir + 'nomatch-contigs.fa'
     params:
         fragment_size=int(fragment_size)
     shell: """
-        ./scripts/extract-matching-fragments.py {input.matches} \
-              {input.assembly} {output.fragments} \
-              --output-contigs {output.contigs} \
+        ./scripts/extract-matching-fragments.py \
+              {input.matches} {input.assembly} \
+              --output-fragments {output.fragments} \
+              --matching-contigs {output.matching} \
+              --nomatch-contigs {output.nomatch} \
               -F {params.fragment_size}
     """
 

@@ -24,15 +24,18 @@ class GenomeShredder(object):
 
 def main():
     p = argparse.ArgumentParser()
-    p.add_argument('gather_matches')
-    p.add_argument('assembly')
-    p.add_argument('output', help='output fragments go here')
-    p.add_argument('--output-contigs', help='output contigs with ANY matches')
+    p.add_argument('gather_matches_sig')
+    p.add_argument('assembly_fasta')
+    p.add_argument('--output-fragments', help='output fragments go here')
+    p.add_argument('--matching-contigs', help='output contigs with ANY matches')
+    p.add_argument('--nomatch-contigs', help='output contigs with NO matches')
     p.add_argument('-F', '--fragment-size', type=int, default=10000)
     args = p.parse_args()
 
-    siglist = list(sourmash.load_signatures(args.gather_matches))
-    print(f'loaded {len(siglist)} signatures total from {args.gather_matches}')
+    assert args.output_fragments
+
+    siglist = list(sourmash.load_signatures(args.gather_matches_sig))
+    print(f'loaded {len(siglist)} signatures total from {args.gather_matches_sig}')
     if not len(siglist):
         print('ERROR: need at least one matching sig; exiting')
         sys.exit(-1)
@@ -45,13 +48,13 @@ def main():
         combined_matches_mh.merge(ss.minhash)
     print(f'...total hashes (incl not matching): {len(combined_matches_mh)}')
 
-    print(f'outputting to: {args.output}')
-    outfp = open(args.output, 'wt')
+    print(f'outputting to: {args.output_fragments}')
+    outfp = open(args.output_fragments, 'wt')
 
     matching_contigs = set()
-    print(f'loading {args.assembly}...')
+    print(f'loading {args.assembly_fasta}...')
     m = 0
-    for n, x in enumerate(GenomeShredder(args.assembly, args.fragment_size)):
+    for n, x in enumerate(GenomeShredder(args.assembly_fasta, args.fragment_size)):
         name, seq, start, end = x
         print(f'...on fragment {n} {name.split()[0]} start {start} - found {m} so far')
 
@@ -67,14 +70,14 @@ def main():
     outfp.close()
 
     print(f'found matches in {m} of {n} fragments')
-    print(f'output in {args.output}')
+    print(f'output fragments in {args.output_fragments}')
     print(f'{len(matching_contigs)} assembly contigs have matches.')
 
-    if args.output_contigs:
+    if args.matching_contigs:
         found = 0
-        print(f'outputting matching contigs to {args.output_contigs}')
-        with open(args.output_contigs, 'wt') as fp:
-            for record in screed.open(args.assembly):
+        print(f'outputting matching contigs to {args.matching_contigs}')
+        with open(args.matching_contigs, 'wt') as fp:
+            for record in screed.open(args.assembly_fasta):
                 if record.name in matching_contigs:
                     found += 1
                     fp.write(f'>{record.name}\n{record.sequence}\n')
@@ -82,6 +85,18 @@ def main():
         print(f'found and output {found} matching contigs, expected {len(matching_contigs)}')
         assert found == len(matching_contigs)
     
+    if args.nomatch_contigs:
+        found = 0
+        print(f'outputting non-matching contigs to {args.nomatch_contigs}')
+        with open(args.nomatch_contigs, 'wt') as fp:
+            for record in screed.open(args.assembly_fasta):
+                if record.name not in matching_contigs:
+                    found += 1
+                    fp.write(f'>{record.name}\n{record.sequence}\n')
+
+        print(f'found and output {found} non-matching contigs')
+        #assert found == len(matching_contigs)
+
     return 0
 
 
