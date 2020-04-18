@@ -32,16 +32,15 @@ snakemake --use-conda -p -j 1
 
 This should succeed :).
 
-The main output files are 
-
 Once that works, you can configure it yourself by copying
 `test-data/conf-test.yml` to a new file and editing it. See
 `conf/conf-necator.yml` for a real example.
 
 ## Explanation of output files.
 
-In the output directory, there will be a few important files -- the main
-ones are,
+In the output directory (e.g. `output.test`, or whatever is specified
+in the config file you use), there will be a few important files --
+the main ones are,
 
 * `gather.csv` - the list of contaminants
 * `matching-contigs.fa` - all contigs with any matches to the database
