@@ -7,9 +7,10 @@ database, for the purposes of decontamination.
 
 ## Installing!
 
-You'll need snakemake and conda installed.
-
-Then, clone this repository and change into the top-level repo directory.
+Clone this repository and change into the top-level repo directory.
+The file `environment.yml` contains the necessary conda packages
+(python and snakemake) to run charcoal; see the Quickstart section
+for explicit instructions.
 
 ### Quickstart:
 
